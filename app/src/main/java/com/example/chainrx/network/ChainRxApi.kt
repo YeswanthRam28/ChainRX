@@ -51,6 +51,16 @@ interface ChainRxService {
 
     @GET("bids/{id}")
     suspend fun getBids(@Path("id") id: Int): List<Bid>
+
+    // DAO / Community
+    @GET("dao/proposals")
+    suspend fun getProposals(@Query("community") community: Int): List<Proposal>
+
+    @POST("dao/proposals")
+    suspend fun createProposal(@Body proposal: ProposalCreate): TransactionResponse
+
+    @POST("dao/proposals/vote")
+    suspend fun voteProposal(@Body vote: ProposalVote): TransactionResponse
 }
 
 object ApiClient {

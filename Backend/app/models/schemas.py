@@ -35,3 +35,25 @@ class BidInfo(BaseModel):
     bidder: str
     amount: int
     deliveryTime: str
+
+# ── DAO SCHEMAS ───────────────────────────────────────────────────
+class ProposalCreate(BaseModel):
+    title: str
+    description: str
+    community: int # 0=GENERAL, 1=HOSPITAL, 2=TRANSPORT
+    durationDays: int = 7
+
+class ProposalVote(BaseModel):
+    proposalId: int
+    support: bool
+
+class ProposalInfo(BaseModel):
+    id: int
+    proposer: str
+    title: str
+    description: str
+    votesFor: int
+    votesAgainst: int
+    community: str
+    endTime: int
+    hasVoted: bool = False

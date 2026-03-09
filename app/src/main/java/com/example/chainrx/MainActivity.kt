@@ -93,6 +93,19 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+        // ── BOTTOM NAVIGATION ────────────────────────────────
+        val bottomNav = findViewById<com.google.android.material.bottomnavigation.BottomNavigationView>(R.id.bottomNavigation)
+        bottomNav.selectedItemId = R.id.nav_home
+        bottomNav.setOnItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.nav_community -> {
+                    startActivity(Intent(this, DAOActivity::class.java))
+                    false // Don't highlight it permanently if we are just jumping to another activity
+                }
+                else -> true
+            }
+        }
+
         viewModel.fetchShipments()
     }
 

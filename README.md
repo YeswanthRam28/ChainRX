@@ -1,60 +1,61 @@
-# ChainRX: Blockchain-Powered Medical Cold-Chain Logistics
+# ChainRX: Blockchain-Powered Medical Logistics 🏥📦
 
-![ChainRX Logo](https://img.shields.io/badge/ChainRX-Logistics-teal)
-
-ChainRX is a decentralized application designed to transform medical logistics. It leverages the **Shardeum Blockchain** (Mezame Testnet) to ensure transparency, accountability, and security in the transportation of pharmaceutical goods.
+ChainRX is a decentralized logistics platform designed to optimize medical resource transport with immutable transparency, secure escrow payments, and real-time tracking.
 
 ## 🚀 Key Features
 
-- **Decentralized Escrow**: Payments are locked in a smart contract and only released after delivery confirmation.
+- **Escrow-Based Payments**: Funds are locked in a smart contract and released only upon successful delivery confirmation.
 - **Relayer Pattern**: Backend handles gas fees and transaction signing for a seamless user experience.
-- **QR Code Verification**: Secure handshakes during pickup and delivery via encrypted QR codes.
-- **Live Real-time Tracking**: Monitor transporter movements in real-time via WebSockets and Google Maps.
+- **QR Handshake**: Secure pickup and delivery verification using encrypted QR codes.
+- **Real-time GPS Tracking**: Monitor shipments in real-time via WebSockets and OpenStreetMap.
+- **Decentralized DAO Community**: Dedicated governance forums for Hospitals and Transporters to vote on platform proposals.
 - **Role-Based Access**: Specialized dashboards for Hospitals (Senders/Receivers) and Transporters.
 - **IPFS Proof-of-Delivery**: Immutable photo evidence stored on IPFS via Pinata.
 
-## 🛠 Tech Stack
+## 🛠️ Tech Stack
 
-- **Android**: Kotlin, Material 3, Google Maps SDK, ZXing (QR), WebSockets.
-- **Backend**: FastAPI (Python), SQLAlchemy, Web3.py, NeonDB (PostgreSQL).
-- **Blockchain**: Solidity (Smart Contracts), Shardeum Mezame Testnet.
-- **Storage**: IPFS (Pinata).
+**Frontend (Mobile)**: Kotlin, Android SDK, Material 3, OSMDroid, ZXing QR.
+**Backend (Relayer)**: FastAPI (Python), Web3.py, SQLAlchemy, NeonDB (PostgreSQL), Java-WebSocket.
+**Blockchain**: Solidity (Contract), Hardhat, Shardeum/Polygon Testnet.
+**Storage**: IPFS (via Pinata).
 
-## 📂 Project Structure
+## 📁 Project Structure
 
 ```text
 ChainRX/
-├── app/                # Android Mobile Application (Kotlin)
-├── Backend/            # FastAPI Python Server
-└── Blockchain/         # Solidity Smart Contracts & Hardhat Config
+├── app/               # Android Application (Kotlin)
+├── Backend/           # FastAPI Relayer Server (Python)
+├── Blockchain/        # Smart Contracts & Deployment (Solidity)
+└── README.md          # Project Documentation
 ```
 
-## ⚙️ Getting Started
+## ⚙️ Setup & Installation
 
 ### 1. Smart Contract
-- Navigate to `Blockchain/`
-- Install dependencies: `npm install`
-- Deploy to Shardeum: `npx hardhat run scripts/deploy.js --network shardeum`
+1. Go to `Blockchain/`
+2. `npm install`
+3. Create `.env` with `POLYGON_RPC_URL` and `PRIVATE_KEY`
+4. Deploy: `npx hardhat run scripts/deploy.js --network shardeum`
 
-### 2. Backend API
-- Navigate to `Backend/`
-- Install dependencies: `pip install -r requirements.txt`
-- Configure `.env` (RPC URL, Contract Address, Private Key, Pinata Keys)
-- Run server: `uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload`
+### 2. Backend Relayer
+1. Go to `Backend/`
+2. `pip install -r requirements.txt`
+3. Create `.env` with:
+   - `NEON_DATABASE_URL`
+   - `CONTRACT_ADDRESS`
+   - `PRIVATE_KEY`
+   - `PINATA_API_KEY` / `PINATA_SECRET_KEY`
+4. Run: `uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload`
 
 ### 3. Android App
-- Open the `ChainRX` root folder in Android Studio.
-- Add your Google Maps API Key to `app/src/main/AndroidManifest.xml`.
-- Update `ApiClient.BASE_URL` in `app/src/main/java/com/example/chainrx/network/ChainRxApi.kt` to your server's IP.
-- Build and run on an Android device/emulator.
+1. Open `app/` in Android Studio.
+2. Update `BASE_URL` in `ChainRxApi.kt` to point to your backend IP.
+3. Build and run on emulator or physical device.
 
-## 📜 Smart Contract Status
-- **Network**: Shardeum Mezame
-- **Contract Address**: `0x3ce4d1cFB16C3B50eaa594B20b13AA28729E671b`
+## 📜 Smart Contracts
 
-## 🔒 Security
-- Private keys and sensitive credentials must be stored in `.env` files (excluded from Git).
-- Use `Relayer` pattern to prevent unauthorized contract calls.
+- **Shipment Contract**: `0x3ce4d1cFB16C3B50eaa594B20b13AA28729E671b` (Shardeum)
+- **Community DAO**: `0xB8a97FFfaF22D16f01b96d8BE7b1Aa5441608e1A`
 
----
-Built with ❤️ for secure healthcare logistics.
+## ⚖️ License
+MIT License

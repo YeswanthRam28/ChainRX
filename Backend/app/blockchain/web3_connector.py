@@ -23,8 +23,15 @@ class Web3Connector:
     def is_connected(self):
         return self.w3.is_connected()
 
-    def get_contract(self):
-        return self.contract
+    def get_contract(self, address=None, abi_filename="abi.json"):
+        if address is None:
+            return self.contract
+            
+        abi_path = os.path.join(os.path.dirname(__file__), abi_filename)
+        with open(abi_path, "r") as f:
+            abi = json.load(f)
+            
+        return self.w3.eth.contract(address=self.w3.to_checksum_address(address), abi=abi)
 
     def sign_and_send_transaction(self, function_call, value=0):
         # Build transaction

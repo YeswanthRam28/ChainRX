@@ -51,3 +51,28 @@ data class TransactionResponse(
     @SerializedName("tx_hash")
     val txHash: String
 )
+
+// DAO Models
+data class Proposal(
+    val id: Int,
+    val proposer: String,
+    val title: String,
+    val description: String,
+    val votesFor: Int,
+    val votesAgainst: Int,
+    val community: String,
+    val endTime: Long,
+    val hasVoted: Boolean
+)
+
+data class ProposalCreate(
+    val title: String,
+    val description: String,
+    val community: Int,
+    val durationDays: Int = 3
+)
+
+data class ProposalVote(
+    val proposalId: Int,
+    val support: Boolean
+)

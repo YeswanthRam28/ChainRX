@@ -4,7 +4,8 @@ from app.services.blockchain_service import BlockchainService
 from app.blockchain.web3_connector import Web3Connector
 from app.services.database_service import DatabaseService
 from app.auth.role_checker import RoleChecker, get_current_user
-from app.models.db_models import User, SessionLocal
+from app.models.db_models import User
+from app.database.neon_db import SessionLocal
 import os
 
 router = APIRouter()

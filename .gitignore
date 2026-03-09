@@ -1,0 +1,28 @@
+# Android
+*.iml
+.gradle
+/local.properties
+/.idea
+/build
+/captures
+.externalNativeBuild
+.cxx
+
+# Python / Backend
+__pycache__/
+*.py[cod]
+*$py.class
+venv/
+.env
+
+# Blockchain / Hardhat
+node_modules/
+artifacts/
+cache/
+typechain/
+coverages/
+coverage.json
+.vscode/
+
+# Logs
+*.log

@@ -5,28 +5,23 @@ import android.content.pm.PackageManager
 import android.os.Bundle
 import android.os.Looper
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import com.example.chainrx.auth.AuthManager
 import com.google.android.gms.location.*
-import com.google.android.gms.maps.CameraUpdateFactory
-import com.google.android.gms.maps.GoogleMap
-import com.google.android.gms.maps.MapView
-import com.google.android.gms.maps.OnMapReadyCallback
-import com.google.android.gms.maps.model.BitmapDescriptorFactory
-import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.Marker
-import com.google.android.gms.maps.model.MarkerOptions
 import org.java_websocket.client.WebSocketClient
 import org.java_websocket.handshake.ServerHandshake
 import org.json.JSONObject
+import org.osmdroid.config.Configuration
+import org.osmdroid.tileprovider.tilesource.TileSourceFactory
+import org.osmdroid.util.GeoPoint
+import org.osmdroid.views.MapView
+import org.osmdroid.views.overlay.Marker
 import java.net.URI
 
-class TrackingActivity : AppCompatActivity(), OnMapReadyCallback {
+class TrackingActivity : AppCompatActivity() {
 
     private lateinit var mapView: MapView
-    private var googleMap: GoogleMap? = null
     private var transporterMarker: Marker? = null
     
     private lateinit var fusedLocationClient: FusedLocationProviderClient
@@ -38,6 +33,11 @@ class TrackingActivity : AppCompatActivity(), OnMapReadyCallback {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        
+        // OSMDroid Configuration - Must be done before setContentView
+        Configuration.getInstance().load(this, android.preference.PreferenceManager.getDefaultSharedPreferences(this))
+        Configuration.getInstance().userAgentValue = packageName
+
         setContentView(R.layout.activity_tracking)
 
         shipmentId = intent.getIntExtra("shipment_id", -1)
@@ -45,8 +45,13 @@ class TrackingActivity : AppCompatActivity(), OnMapReadyCallback {
         
         tvStatus = findViewById(R.id.tvTrackingStatus)
         mapView = findViewById(R.id.mapView)
-        mapView.onCreate(savedInstanceState)
-        mapView.getMapAsync(this)
+        mapView.setTileSource(TileSourceFactory.MAPNIK)
+        mapView.setMultiTouchControls(true)
+        
+        val mapController = mapView.controller
+        mapController.setZoom(15.0)
+        // Default center (can be updated when location comes)
+        mapController.setCenter(GeoPoint(0.0, 0.0))
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
 
@@ -56,7 +61,7 @@ class TrackingActivity : AppCompatActivity(), OnMapReadyCallback {
     }
 
     private fun connectWebSocket() {
-        // Replace with your local IP if testing on physical device, e.g., "ws://192.168.1.5:8000"
+        // Use the common BASE_URL from ApiClient
         val baseUrl = com.example.chainrx.network.ApiClient.BASE_URL.replace("http://", "ws://").replace("https://", "wss://")
         val uri = URI("${baseUrl}ws/tracking/$shipmentId")
 
@@ -122,33 +127,37 @@ class TrackingActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private fun updateTransporterMarker(lat: Double, lng: Double) {
         runOnUiThread {
-            val pos = LatLng(lat, lng)
+            val geoPoint = GeoPoint(lat, lng)
             if (transporterMarker == null) {
-                transporterMarker = googleMap?.addMarker(MarkerOptions()
-                    .position(pos)
-                    .title("Transporter")
-                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)))
-                googleMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(pos, 15f))
-            } else {
-                transporterMarker?.position = pos
+                transporterMarker = Marker(mapView)
+                transporterMarker?.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM)
+                transporterMarker?.title = "Transporter"
+                mapView.overlays.add(transporterMarker)
+                mapView.controller.animateTo(geoPoint)
             }
+            
+            transporterMarker?.position = geoPoint
+            mapView.invalidate() // Refresh map
+
             if (role == "hospital") {
                 tvStatus.text = "🚚 Transporter is moving..."
             }
         }
     }
 
-    override fun onMapReady(map: GoogleMap) {
-        googleMap = map
-        googleMap?.uiSettings?.isZoomControlsEnabled = true
+    override fun onResume() { 
+        super.onResume()
+        mapView.onResume() 
     }
-
-    override fun onResume() { super.onResume(); mapView.onResume() }
-    override fun onPause() { super.onPause(); mapView.onPause() }
+    
+    override fun onPause() { 
+        super.onPause()
+        mapView.onPause() 
+    }
+    
     override fun onDestroy() { 
         super.onDestroy()
         webSocketClient?.close()
-        mapView.onDestroy() 
+        mapView.onDetach() 
     }
-    override fun onLowMemory() { super.onLowMemory(); mapView.onLowMemory() }
 }

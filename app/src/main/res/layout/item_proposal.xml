@@ -85,24 +85,24 @@
 
             <Button
                 android:id="@+id/btnVoteFor"
-                style="@style/Widget.Material3.Button.TonalButton"
+                style="@style/Widget.MaterialComponents.Button"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:layout_marginEnd="8dp"
                 android:text="Yes"
-                app:backgroundTint="@color/primary_light"
-                app:strokeColor="@color/primary_teal" />
+                android:textColor="@color/white"
+                app:backgroundTint="@color/primary_teal" />
 
             <Button
                 android:id="@+id/btnVoteAgainst"
-                style="@style/Widget.Material3.Button.TonalButton"
+                style="@style/Widget.MaterialComponents.Button"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="No"
-                app:backgroundTint="#FDEDEC"
-                app:strokeColor="#E74C3C" />
+                android:textColor="@color/white"
+                app:backgroundTint="#E74C3C" />
         </LinearLayout>
 
         <TextView

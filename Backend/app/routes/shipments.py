@@ -7,6 +7,7 @@ from app.database.neon_db import SessionLocal
 from app.services.database_service import DatabaseService
 from app.auth.role_checker import RoleChecker, get_current_user
 from app.models.db_models import User
+from app.services.ai_advisor import AIAdvisor
 from typing import List
 
 router = APIRouter()
@@ -27,6 +28,9 @@ def get_blockchain_service(db_service: DatabaseService = Depends(get_db_service)
 
 def get_ipfs_service():
     return IPFSService()
+
+def get_ai_advisor():
+    return AIAdvisor()
 
 
 # ── CREATE ─────────────────────────────────────────────────────────
@@ -223,3 +227,37 @@ async def release_payment_form(
     service: BlockchainService = Depends(get_blockchain_service)
 ):
     return service.release_payment(shipmentId)
+@router.get("/shipments/{shipment_id}/ai-recommendation")
+async def get_ai_recommendation(
+    shipment_id: int,
+    user: User = Depends(RoleChecker(["hospital", "admin"])),
+    service: BlockchainService = Depends(get_blockchain_service),
+    ai_advisor: AIAdvisor = Depends(get_ai_advisor)
+):
+    """Get AI recommendation for selecting the best transporter."""
+    from app.models.db_models import DB_Bid, User as DB_User
+    
+    # 1. Get Shipment details
+    shipment = service.get_shipment(shipment_id)
+    if not shipment:
+        raise HTTPException(status_code=404, detail="Shipment not found")
+        
+    # 2. Get all bids for this shipment
+    db_bids = service.db.db.query(DB_Bid).filter(DB_Bid.shipment_id == shipment_id).all()
+    if not db_bids:
+        return {"error": "No bids available for this shipment."}
+        
+    # 3. Format bids for AI enrichment (include reputation)
+    bids_data = []
+    for b in db_bids:
+        transporter = service.db.db.query(DB_User).filter(DB_User.id == b.transporter_id).first()
+        bids_data.append({
+            "bid_id": b.id,
+            "transporter_name": transporter.name if transporter else "Unknown",
+            "reputation": transporter.reputation_score if transporter else 5.0,
+            "amount": float(b.bid_amount),
+            "delivery_time": b.estimated_time
+        })
+        
+    # 4. Get AI Decision
+    return await ai_advisor.get_best_bid(shipment, bids_data)

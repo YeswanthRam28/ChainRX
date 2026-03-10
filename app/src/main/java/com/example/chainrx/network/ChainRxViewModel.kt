@@ -32,6 +32,9 @@ class ChainRxViewModel(application: Application) : AndroidViewModel(application)
     private val _loginResult = MutableStateFlow<String?>(null)
     val loginResult: StateFlow<String?> = _loginResult
 
+    private val _aiRecommendation = MutableStateFlow<AIRecommendation?>(null)
+    val aiRecommendation: StateFlow<AIRecommendation?> = _aiRecommendation
+
     fun login(email: String, pass: String) {
         viewModelScope.launch {
             _isLoading.value = true
@@ -216,6 +219,16 @@ class ChainRxViewModel(application: Application) : AndroidViewModel(application)
                 _statusMessage.value = "Accept Bid Error: ${e.message}"
             } finally {
                 _isLoading.value = false
+            }
+        }
+    }
+
+    fun fetchAIRecommendation(shipmentId: Int) {
+        viewModelScope.launch {
+            try {
+                _aiRecommendation.value = apiService.getAIRecommendation(shipmentId)
+            } catch (e: Exception) {
+                // Silently fail if AI is just a bonus
             }
         }
     }

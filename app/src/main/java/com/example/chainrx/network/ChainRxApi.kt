@@ -62,6 +62,9 @@ interface ChainRxService {
     @POST("dao/proposals/vote")
     suspend fun voteProposal(@Body vote: ProposalVote): TransactionResponse
 
+    @GET("shipments/{id}/ai-recommendation")
+    suspend fun getAIRecommendation(@Path("id") id: Int): AIRecommendation
+
     // Optimizer
     @POST("optimizer/optimize")
     suspend fun optimizeRoute(@Body request: RouteRequest): OptimizedRoute

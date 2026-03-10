@@ -87,3 +87,10 @@ data class OptimizedRoute(
     val optimized_order: List<String>,
     val coordinates: List<List<Double>>
 )
+
+data class AIRecommendation(
+    val best_bid_id: Int? = null,
+    val reasoning: String? = null,
+    val confidence_score: Int? = null,
+    val error: String? = null
+)

@@ -250,6 +250,24 @@ class ShipmentDetailsActivity : AppCompatActivity() {
                     // For Hospital: if BIDDING, auto-fetch bids and show bid list
                     if (role == "hospital" && it.status == "1") {
                         viewModel.fetchBids(shipmentId)
+                        viewModel.fetchAIRecommendation(shipmentId)
+                    }
+                }
+            }
+        }
+
+        // ── OBSERVE AI RECOMMENDATION ───────────────────────
+        lifecycleScope.launchWhenStarted {
+            viewModel.aiRecommendation.collect { rec ->
+                rec?.let {
+                    val card = findViewById<View>(R.id.cvAIRecommendation)
+                    val tvReasoning = findViewById<TextView>(R.id.tvAIReasoning)
+                    if (it.best_bid_id != null) {
+                        card.visibility = View.VISIBLE
+                        tvReasoning.text = it.reasoning
+                        
+                        // Re-render bids to mark the AI choice
+                        renderBids(viewModel.bids.value, it.best_bid_id)
                     }
                 }
             }
@@ -259,48 +277,57 @@ class ShipmentDetailsActivity : AppCompatActivity() {
         lifecycleScope.launchWhenStarted {
             viewModel.bids.collect { bids ->
                 if (role == "hospital" && bids.isNotEmpty()) {
-                    // Dynamically show bids with accept buttons
-                    val container = findViewById<LinearLayout>(R.id.bidContainer)
-                    if (container != null) {
-                        container.removeAllViews()
-                        container.visibility = View.VISIBLE
-
-                        val header = TextView(this@ShipmentDetailsActivity).apply {
-                            text = "━━━ Bids Received ━━━"
-                            textSize = 16f
-                            setPadding(0, 24, 0, 12)
-                        }
-                        container.addView(header)
-
-                        bids.forEach { bid ->
-                            val bidView = LinearLayout(this@ShipmentDetailsActivity).apply {
-                                orientation = LinearLayout.HORIZONTAL
-                                setPadding(0, 8, 0, 8)
-                            }
-
-                            val bidText = TextView(this@ShipmentDetailsActivity).apply {
-                                text = "${bid.bidder ?: "Transporter"} — ${bid.amount} SHM, ${bid.deliveryTime}"
-                                textSize = 14f
-                                layoutParams = LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f)
-                            }
-
-                            val acceptBtn = Button(this@ShipmentDetailsActivity).apply {
-                                text = "Accept"
-                                setOnClickListener {
-                                    isEnabled = false
-                                    text = "Accepting..."
-                                    viewModel.acceptBid(shipmentId, bid.id)
-                                }
-                            }
-
-                            bidView.addView(bidText)
-                            bidView.addView(acceptBtn)
-                            container.addView(bidView)
-                        }
-                    }
+                    renderBids(bids, viewModel.aiRecommendation.value?.best_bid_id)
                 }
             }
         }
+    }
+
+    private fun renderBids(bids: List<com.example.chainrx.network.Bid>, recommendedBidId: Int?) {
+        val container = findViewById<LinearLayout>(R.id.bidContainer) ?: return
+        container.removeAllViews()
+        container.visibility = View.VISIBLE
+
+        val header = TextView(this).apply {
+            text = "━━━ Bids Received ━━━"
+            textSize = 16f
+            setPadding(0, 24, 0, 12)
+        }
+        container.addView(header)
+
+        bids.forEach { bid ->
+            val isAiChoice = bid.id == recommendedBidId
+            
+            val bidView = LinearLayout(this).apply {
+                orientation = LinearLayout.HORIZONTAL
+                setPadding(0, 8, 0, 8)
+                if (isAiChoice) {
+                    setBackgroundColor(android.graphics.Color.parseColor("#E0F2F1"))
+                }
+            }
+
+            val bidText = TextView(this).apply {
+                val label = if (isAiChoice) "✨ AI CHOICE: " else ""
+                text = "$label${bid.bidder ?: "Transporter"} — ${bid.amount} SHM, ${bid.deliveryTime}"
+                textSize = 14f
+                if (isAiChoice) setTextColor(android.graphics.Color.parseColor("#00796B"))
+                layoutParams = LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f)
+            }
+
+            val acceptBtn = Button(this).apply {
+                text = "Accept"
+                setOnClickListener {
+                    isEnabled = false
+                    text = "Accepting..."
+                    viewModel.acceptBid(shipmentId, bid.id)
+                }
+            }
+
+            bidView.addView(bidText)
+            bidView.addView(acceptBtn)
+            container.addView(bidView)
+        }
+    }
 
         // ── STATUS MESSAGES ──────────────────────────────────
         lifecycleScope.launchWhenStarted {

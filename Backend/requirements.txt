@@ -10,3 +10,4 @@ web3
 requests
 python-multipart
 aiohttp
+google-generativeai

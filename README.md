@@ -1,62 +1,61 @@
-# ChainRX: Blockchain-Powered Medical Logistics 🏥📦
+<img src="https://capsule-render.vercel.app/api?type=waving&color=0:00D9FF,100:007CF0&height=200&section=header&text=ChainRX&fontSize=50&fontColor=ffffff&animation=fadeIn"/>
 
-ChainRX is a decentralized logistics platform designed to optimize medical resource transport with immutable transparency, secure escrow payments, and real-time tracking.
+<p align="center">
+<img src="https://readme-typing-svg.herokuapp.com?font=Orbitron&size=30&duration=4000&color=00D9FF&center=true&vCenter=true&width=700&lines=Blockchain+Powered+Medical+Logistics;AI+Driven+Healthcare+Supply+Chain;Secure+Decentralized+Transport+Network;Built+for+Glitchcon+2.0"/>
+</p>
 
-## 🚀 Key Features
+<p align="center">
+<img src="https://img.shields.io/badge/Blockchain-Solidity-blue">
+<img src="https://img.shields.io/badge/AI-Route%20Optimization-green">
+<img src="https://img.shields.io/badge/Backend-FastAPI-red">
+<img src="https://img.shields.io/badge/Mobile-Kotlin-purple">
+<img src="https://img.shields.io/badge/IPFS-Decentralized%20Storage-orange">
+<img src="https://img.shields.io/badge/License-MIT-yellow">
+</p>
 
-- **Escrow-Based Payments**: Funds are locked in a smart contract and released only upon successful delivery confirmation.
-- **Relayer Pattern**: Backend handles gas fees and transaction signing for a seamless user experience.
-- **QR Handshake**: Secure pickup and delivery verification using encrypted QR codes.
-- **Real-time GPS Tracking**: Monitor shipments in real-time via WebSockets and OpenStreetMap.
-- **AI Route Intelligence**: Advanced path optimization for transporters using a Genetic Algorithm to solve the Travelling Salesman Problem.
-- **Decentralized DAO Community**: Dedicated governance forums for Hospitals and Transporters to vote on platform proposals.
-- **Role-Based Access**: Specialized dashboards for Hospitals (Senders/Receivers) and Transporters.
-- **IPFS Proof-of-Delivery**: Immutable photo evidence stored on IPFS via Pinata.
+---
 
-## 🛠️ Tech Stack
+# 🌍 Overview
 
-**Frontend (Mobile)**: Kotlin, Android SDK, Material 3, OSMDroid, ZXing QR.
-**Backend (Relayer)**: FastAPI (Python), Web3.py, SQLAlchemy, NeonDB (PostgreSQL), Java-WebSocket.
-**Blockchain**: Solidity (Contract), Hardhat, Shardeum/Polygon Testnet.
-**Storage**: IPFS (via Pinata).
+**ChainRX** is a decentralized healthcare logistics platform designed to ensure **secure, transparent, and efficient transportation of medical resources** including vaccines, medicines, diagnostic samples, and blood units.
 
-## 📁 Project Structure
+The platform combines **blockchain smart contracts, AI logistics intelligence, real-time shipment tracking, and decentralized governance** to build a trustless healthcare supply chain network.
 
-```text
-ChainRX/
-├── app/               # Android Application (Kotlin)
-├── Backend/           # FastAPI Relayer Server (Python)
-├── Blockchain/        # Smart Contracts & Deployment (Solidity)
-└── README.md          # Project Documentation
-```
+ChainRX ensures:
 
-## ⚙️ Setup & Installation
+- secure transport coordination
+- immutable logistics records
+- automated escrow payments
+- transparent delivery verification
 
-### 1. Smart Contract
-1. Go to `Blockchain/`
-2. `npm install`
-3. Create `.env` with `POLYGON_RPC_URL` and `PRIVATE_KEY`
-4. Deploy: `npx hardhat run scripts/deploy.js --network shardeum`
+---
 
-### 2. Backend Relayer
-1. Go to `Backend/`
-2. `pip install -r requirements.txt`
-3. Create `.env` with:
-   - `NEON_DATABASE_URL`
-   - `CONTRACT_ADDRESS`
-   - `PRIVATE_KEY`
-   - `PINATA_API_KEY` / `PINATA_SECRET_KEY`
-4. Run: `uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload`
+# 🚀 Core Features
 
-### 3. Android App
-1. Open `app/` in Android Studio.
-2. Update `BASE_URL` in `ChainRxApi.kt` to point to your backend IP.
-3. Build and run on emulator or physical device.
+| Feature | Description |
+|------|-------------|
+| 🔐 Smart Contract Escrow | Funds locked and released automatically after delivery confirmation |
+| 📲 QR Handshake | Secure pickup and delivery verification |
+| 🛰 Real-Time GPS Tracking | Monitor shipments live |
+| 🤖 AI Route Intelligence | Genetic Algorithm for optimal transport routes |
+| 🗳 DAO Governance | Community voting for platform improvements |
+| 📸 IPFS Proof-of-Delivery | Immutable delivery evidence |
+| 👥 Role-Based Access | Separate dashboards for hospitals and transporters |
 
-## 📜 Smart Contracts
+---
 
-- **Shipment Contract**: `0x3ce4d1cFB16C3B50eaa594B20b13AA28729E671b` (Shardeum)
-- **Community DAO**: `0xB8a97FFfaF22D16f01b96d8BE7b1Aa5441608e1A`
+# 🔄 Logistics Workflow
 
-## ⚖️ License
-MIT License
+```mermaid
+graph TD
+
+A[Hospital Creates Shipment] --> B[Smart Contract Escrow Created]
+B --> C[Transport Providers Bid]
+C --> D[AI Route Optimization]
+D --> E[Transporter Picks Up Shipment]
+E --> F[Live GPS Tracking]
+F --> G[Delivery Verified with QR]
+G --> H[Proof Stored on IPFS]
+H --> I[Smart Contract Releases Payment]
+
+

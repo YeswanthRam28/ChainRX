@@ -45,7 +45,22 @@ class PickupActivity : AppCompatActivity() {
         lifecycleScope.launchWhenStarted {
             viewModel.statusMessage.collect {
                 if (it.contains("Pickup Confirmed", ignoreCase = true)) {
-                    finish()
+                    // Trigger auto optimization
+                    viewModel.runAutoRouteOptimization()
+                }
+            }
+        }
+
+        lifecycleScope.launchWhenStarted {
+            viewModel.optimizedRouteResult.collect { result ->
+                result?.let {
+                    val nextStop = it.optimized_order.getOrNull(0) ?: "Return to base"
+                    androidx.appcompat.app.AlertDialog.Builder(this@PickupActivity)
+                        .setTitle("📦 Pickup Confirmed!")
+                        .setMessage("AI Route Optimized.\n\nYour NEXT STOP is:\n$nextStop")
+                        .setPositiveButton("Navigate") { _, _ -> finish() }
+                        .setCancelable(false)
+                        .show()
                 }
             }
         }

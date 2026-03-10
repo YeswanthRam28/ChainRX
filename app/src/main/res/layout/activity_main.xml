@@ -121,6 +121,7 @@
                         android:src="@android:drawable/ic_media_play"
                         app:tint="@color/text_gray" />
                 </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
 
             <!-- Route Optimizer Card — only visible to Transport -->
             <com.google.android.material.card.MaterialCardView

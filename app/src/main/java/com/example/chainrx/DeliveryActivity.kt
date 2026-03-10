@@ -56,6 +56,11 @@ class DeliveryActivity : AppCompatActivity() {
         lifecycleScope.launchWhenStarted {
             viewModel.statusMessage.collect {
                 if (it.contains("Delivery Confirmed", ignoreCase = true)) {
+                    val roleNow = com.example.chainrx.auth.AuthManager.getRole(this@DeliveryActivity)
+                    if (roleNow == "transport") {
+                        viewModel.runAutoRouteOptimization()
+                        // Wait for result OR go to success
+                    }
                     startActivity(Intent(this@DeliveryActivity, SuccessActivity::class.java))
                     finish()
                 }

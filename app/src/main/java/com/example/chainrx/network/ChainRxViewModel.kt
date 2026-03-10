@@ -219,4 +219,29 @@ class ChainRxViewModel(application: Application) : AndroidViewModel(application)
             }
         }
     }
+
+    // ── AUTO ROUTE OPTIMIZATION ──────────────────────────────
+    private val _optimizedRouteResult = MutableStateFlow<OptimizedRoute?>(null)
+    val optimizedRouteResult: StateFlow<OptimizedRoute?> = _optimizedRouteResult
+
+    fun runAutoRouteOptimization() {
+        viewModelScope.launch {
+            _isLoading.value = true
+            try {
+                val allShipments = apiService.getShipments()
+                // Filter for shipments where user is transporter and they are active (0: Awaiting Pickup, 2: In Transit)
+                val active = allShipments.filter { it.status == "0" || it.status == "2" }
+                
+                if (active.size >= 2) {
+                    val addresses = active.flatMap { listOf(it.pickupLocation, it.deliveryLocation) }.distinct()
+                    val result = apiService.optimizeRoute(RouteRequest(addresses))
+                    _optimizedRouteResult.value = result
+                }
+            } catch (e: Exception) {
+                _statusMessage.value = "Auto-Optimization Failed: ${e.message}"
+            } finally {
+                _isLoading.value = false
+            }
+        }
+    }
 }

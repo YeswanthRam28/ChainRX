@@ -159,7 +159,80 @@ Key tracking capabilities include:
 ---
 
 ## 📁 Project Structure
-need to add details 
+
+The **ChainRX** platform follows a modular architecture that separates the **mobile application, backend services, and blockchain layer**.  
+This structure ensures **scalability, maintainability, and efficient collaboration** during development.
+
+---
+
+### 🗂 Directory Overview
+
+---
+
+## 📱 app/ – Android Application
+
+The **`app/`** directory contains the **Android mobile application developed using Kotlin and Android SDK**.
+
+This application serves as the **primary user interface** for hospitals, transport providers, and drivers to interact with the ChainRX logistics platform.
+
+### ✨ Key Features
+
+- 📦 **Shipment Creation** – Hospitals can create requests for medical resource transport.
+- 🚚 **Delivery Assignment** – Transport providers can accept logistics tasks.
+- 🛰 **Real-Time Tracking** – Monitor shipment location using GPS tracking.
+- 🔐 **QR Code Verification** – Secure pickup and delivery confirmation.
+- 🌡 **IoT Monitoring** – View temperature and shipment sensor alerts.
+
+The mobile application communicates with the backend using **REST APIs** and receives **real-time updates via WebSocket connections**.
+
+---
+
+## ⚙ Backend/ – FastAPI Relayer Server
+
+The **`Backend/`** directory contains the **server-side logic implemented using FastAPI (Python)**.
+
+It acts as the **central communication hub** between the mobile application, blockchain network, and IoT monitoring system.
+
+### 🧠 Core Responsibilities
+
+- 📡 Handling API requests from the mobile application
+- 📦 Managing shipment and logistics data
+- 🔗 Interacting with blockchain smart contracts using **Web3.py**
+- 🌡 Processing **IoT sensor data** from logistics containers
+- 📸 Uploading **proof-of-delivery images to IPFS**
+- 🗄 Managing data storage using **PostgreSQL (NeonDB)**
+
+### 🔁 Relayer Pattern
+
+The backend implements a **Relayer Pattern**, which allows the server to:
+
+- sign blockchain transactions on behalf of users
+- manage gas fees
+- simplify the blockchain interaction process for mobile users
+
+This ensures a **seamless Web3 experience without requiring users to manage wallets directly**.
+
+---
+
+## 🔗 Blockchain/ – Smart Contracts
+
+The **`Blockchain/`** directory contains the **Solidity smart contracts** responsible for implementing the decentralized logistics logic.
+
+These contracts guarantee **transparency, automation, and trustless execution** within the ChainRX system.
+
+### ⛓ Smart Contract Functions
+
+- 📦 **Shipment Creation & Tracking**
+- 💰 **Escrow-Based Payments**
+- ✅ **Delivery Confirmation**
+- 📜 **Immutable Blockchain Event Logging**
+- 🗳 **DAO Governance Mechanisms**
+
+The contracts are compiled and deployed using **Hardhat** and deployed on a blockchain test network such as:
+
+- Polygon Testnet
+- Shardeum Network
+
 
 
 ## 📜 Smart Contracts

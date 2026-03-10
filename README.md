@@ -210,9 +210,7 @@ MIT License
 
 ---
 
-<p align="center">
-<img src="https://github-readme-streak-stats.herokuapp.com/?user=YOUR_USERNAME&theme=tokyonight"/>
-</p>
+
 <p align="center">
 <img src="https://capsule-render.vercel.app/api?type=waving&height=250&color=0:2c5364,50:203a43,100:0f2027&section=footer&animation=twinkling"/>
 </p>

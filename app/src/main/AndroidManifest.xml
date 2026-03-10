@@ -45,6 +45,7 @@
         <activity android:name=".SuccessActivity" />
         <activity android:name=".QRCodeActivity" />
         <activity android:name=".DAOActivity" android:label="Community" />
+        <activity android:name=".RouteOptimizerActivity" android:label="Route Intelligence" />
 
     </application>
 

@@ -8,6 +8,7 @@ ChainRX is a decentralized logistics platform designed to optimize medical resou
 - **Relayer Pattern**: Backend handles gas fees and transaction signing for a seamless user experience.
 - **QR Handshake**: Secure pickup and delivery verification using encrypted QR codes.
 - **Real-time GPS Tracking**: Monitor shipments in real-time via WebSockets and OpenStreetMap.
+- **AI Route Intelligence**: Advanced path optimization for transporters using a Genetic Algorithm to solve the Travelling Salesman Problem.
 - **Decentralized DAO Community**: Dedicated governance forums for Hospitals and Transporters to vote on platform proposals.
 - **Role-Based Access**: Specialized dashboards for Hospitals (Senders/Receivers) and Transporters.
 - **IPFS Proof-of-Delivery**: Immutable photo evidence stored on IPFS via Pinata.

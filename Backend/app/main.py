@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.blockchain.web3_connector import Web3Connector
-from app.routes import auth, shipments, bids, admin, tracking, dao
+from app.routes import auth, shipments, bids, admin, tracking, dao, optimizer
 import os
 from dotenv import load_dotenv
 
@@ -32,6 +32,7 @@ app.include_router(bids.router, tags=["Bids"])
 app.include_router(admin.router, prefix="/admin", tags=["Admin"])
 app.include_router(tracking.router, tags=["Real-time Tracking"])
 app.include_router(dao.router, prefix="/dao", tags=["Community DAO"])
+app.include_router(optimizer.router, prefix="/optimizer", tags=["AI Route Optimizer"])
 
 @app.get("/", tags=["Health"])
 async def root():

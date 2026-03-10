@@ -61,6 +61,10 @@ interface ChainRxService {
 
     @POST("dao/proposals/vote")
     suspend fun voteProposal(@Body vote: ProposalVote): TransactionResponse
+
+    // Optimizer
+    @POST("optimizer/optimize")
+    suspend fun optimizeRoute(@Body request: RouteRequest): OptimizedRoute
 }
 
 object ApiClient {

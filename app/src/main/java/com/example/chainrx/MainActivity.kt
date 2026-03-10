@@ -47,8 +47,13 @@ class MainActivity : AppCompatActivity() {
             "transport" -> {
                 tvGreeting.text = "Marketplace"
                 tvRoleBadge.text = "TRANSPORT"
-                cvCreateShipment.visibility = View.GONE // Transport can't create shipments
-                // Change tab labels
+                cvCreateShipment.visibility = View.GONE 
+                findViewById<View>(R.id.cvOptimizeRoute).visibility = View.VISIBLE
+                
+                findViewById<View>(R.id.cvOptimizeRoute).setOnClickListener {
+                    startActivity(Intent(this, RouteOptimizerActivity::class.java))
+                }
+
                 tabLayout.getTabAt(0)?.text = "Available"
                 tabLayout.getTabAt(1)?.text = "My Deliveries"
             }

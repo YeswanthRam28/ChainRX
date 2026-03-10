@@ -76,3 +76,14 @@ data class ProposalVote(
     val proposalId: Int,
     val support: Boolean
 )
+
+// Optimizer Models
+data class RouteRequest(
+    val locations: List<String>
+)
+
+data class OptimizedRoute(
+    val original_order: List<String>,
+    val optimized_order: List<String>,
+    val coordinates: List<List<Double>>
+)

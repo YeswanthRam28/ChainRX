@@ -26,6 +26,7 @@ Optimized for logistics providers to find work and manage transit tasks.
 *   **Marketplace View**: List of all available shipments open for bidding.
 *   **Bidding System**: **"Place Bid"** action to submit a quote (Amount + Estimated Delivery Time) directly to the blockchain.
 *   **My Tasks**: Specialized list for shipments assigned to the transporter.
+*   **AI Route Intelligence**: A dedicated dashboard to select multiple active shipments and calculate the mathematically shortest delivery path using a Genetic Algorithm.
 *   **Live Handshake (QR)**:
     *   **"Scan QR"**: Scan the hospital's pickup code to officially start the delivery (`IN_TRANSIT` status).
     *   **"Show QR"**: Display a delivery confirmation code to be scanned by the receiving hospital.
